@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +7,28 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  articles;
+  searchTerm;
 
-  constructor() {}
+  constructor(private apiService: ApiService) {
+  }
+
+  ionViewDidEnter(){
+
+    this.apiService.getNews().subscribe((data)=>{
+      console.clear();
+      console.log(data);
+      this.articles = data['articles'];
+    });
+  }
+
+  searchString(){
+    this.apiService.getNewsWithKey(this.searchTerm)
+    .subscribe((data)=>{
+      console.clear();
+      console.log(data);
+      this.articles = data['articles'];
+    });
+  }
 
 }
